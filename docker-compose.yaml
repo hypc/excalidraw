@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  excalidraw:
+    image: hypc/excalidraw
+    container_name: excalidraw
+    restart: always
+    labels:
+      - traefik.http.routers.excalidraw.rule=Host(`excalidraw.${BASE_DOMAIN}`)
+      - traefik.http.routers.excalidraw.entrypoints=websecure
+      - traefik.http.routers.excalidraw.service=excalidraw
+      - traefik.http.services.excalidraw.loadbalancer.server.port=80
+  excalidraw-room:
+    image: hypc/excalidraw-room
+    container_name: excalidraw-room
+    restart: always
+    labels:
+      - traefik.http.routers.excalidraw-room.rule=Host(`excalidraw.${BASE_DOMAIN}`) && Headers(`Upgrade`, `websocket`)
+      - traefik.http.routers.excalidraw-room.entrypoints=websecure
+      - traefik.http.routers.excalidraw-room.service=excalidraw-room
+      - traefik.http.services.excalidraw-room.loadbalancer.server.port=80
+  excalidraw-storage:
+    image: hypc/excalidraw-storage
+    container_name: excalidraw-storage
+    restart: always
+    labels:
+      - traefik.http.routers.excalidraw-storage.rule=Host(`excalidraw.${BASE_DOMAIN}`) && PathPrefix(`/api/v2`)
+      - traefik.http.routers.excalidraw-storage.entrypoints=websecure
+      - traefik.http.routers.excalidraw-storage.service=excalidraw-storage
+      - traefik.http.services.excalidraw-storage.loadbalancer.server.port=8080
+
+networks:
+  default:
+    external: true
+    name: services
