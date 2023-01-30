@@ -28,6 +28,17 @@ services:
       - traefik.http.routers.excalidraw-storage.entrypoints=websecure
       - traefik.http.routers.excalidraw-storage.service=excalidraw-storage
       - traefik.http.services.excalidraw-storage.loadbalancer.server.port=8080
+    environment:
+      STORAGE_URI: redis://excalidraw-redis:6379
+  excalidraw-redis:
+    image: redis
+    container_name: excalidraw-redis
+    restart: always
+    labels:
+      - traefik.enable=false
+    volumes:
+      - type: tmpfs
+        target: /data
 
 networks:
   default:
