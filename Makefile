@@ -1,6 +1,7 @@
 build-excalidraw:
 	cp excalidraw.env.production excalidraw/.env.production
 	echo "BASE_DOMAIN=$(BASE_DOMAIN)" >> excalidraw/.env.production
+	echo "" > excalidraw/.dockerignore
 	docker build -f excalidraw/Dockerfile -t hypc/excalidraw excalidraw
 
 build-excalidraw-room:
@@ -12,3 +13,6 @@ build-excalidraw-storage:
 build: build-excalidraw \
 	build-excalidraw-room \
 	build-excalidraw-storage
+
+up:
+	docker compose up -d
