@@ -1,8 +1,10 @@
 # Excalidraw
 
-## Build and Run
-
 ```bash
+# clone
+git clone --recursive https://github.com/hypc/excalidraw.git
+
+# build and run
 export BASE_DOMAIN=mydomain.com
-make && make up
+make build && make up
 ```
